@@ -1,0 +1,16 @@
+# .NET
+bin/
+obj/
+.vs/
+*.user
+*.lock.json
+*.swp
+
+# Docker
+docker-compose.override.yml
+
+# Environment
+.env
+
+# MacOS
+.DS_Store
