@@ -1,50 +1,72 @@
-# TradeFlow 🌊
+# TradeFlow
 
 **TradeFlow** is a high-frequency crypto analytics engine. It ingests real-time market data, processes it with AI, and visualizes it for traders.
 
-## Phase 1: The Backbone 🦴
+## System Components
 
-Currently, the project consists of the **Ingestion Layer** and the **Infrastructure**.
+| Service       | Technology       | Responsibility                                          | Status      |
+| :------------ | :--------------- | :------------------------------------------------------ | :---------- |
+| **Ingestor**  | .NET 8 Worker    | Connects to Binance WebSocket and publishes raw trades. | ✅ Complete |
+| **RabbitMQ**  | Broker           | Handles high-throughput message streaming.              | ✅ Complete |
+| **Consumer**  | .NET 8 Worker    | Consumes messages and inserts them into storage.        | ✅ Complete |
+| **Storage**   | TimescaleDB      | Stores raw ticks and auto-generates 1-minute candles.   | ✅ Complete |
+| **Analytics** | Python (FinBERT) | (Planned) AI sentiment analysis and price prediction.   | 🚧 Planned  |
+| **Frontend**  | React            | (Planned) Real-time visualization.                      | 🚧 Planned  |
 
-### Architecture
-
-- **TradeFlow.Ingestor**: A .NET 8 Worker Service.
-  - Connects to Binance WebSocket (`wss://stream.binance.com:9443/ws/btcusdt@trade`).
-  - Publishes raw trade messages to RabbitMQ.
-- **RabbitMQ**: Message broker for decoupling services.
-- **TimescaleDB**: Time-series database
+## Getting Started
 
 ### Prerequisites
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 
-### Quick Start
+### 1. Launch Infrastructure
 
-1.  **Start Infrastructure**
+Start the message broker and database containers.
 
-    ```powershell
-    docker-compose up -d
-    ```
+```bash
+docker-compose up -d
+```
 
-    - RabbitMQ Dashboard: [http://localhost:15673](http://localhost:15673) (User: `guest`, Pass: `guest`)
+### 2. Initialize Database
 
-2.  **Run Ingestor**
-    ```powershell
-    cd src/TradeFlow.Ingestor
-    dotnet run
-    ```
-    You should see logs indicating connections to both Binance and RabbitMQ.
+Execute the SQL scripts to set up the Hypertables and Continuous Aggregates.
 
-### Project Structure
+```bash
+docker cp database/init.sql tradeflow-db:/tmp/init.sql
+docker exec tradeflow-db psql -U postgres -d tradeflow -f /tmp/init.sql
+
+docker cp database/candles.sql tradeflow-db:/tmp/candles.sql
+docker exec tradeflow-db psql -U postgres -d tradeflow -f /tmp/candles.sql
+```
+
+### 3. Start Services
+
+Run the Consumer and Ingestor in separate terminals.
+
+**Terminal A (Consumer)**
+
+```bash
+cd src/TradeFlow.Consumer
+dotnet run
+```
+
+**Terminal B (Ingestor)**
+
+```bash
+cd src/TradeFlow.Ingestor
+dotnet run
+```
+
+## Project Structure
 
 ```
 TradeFlow/
 ├── docker-compose.yml       # RabbitMQ & TimescaleDB
+├── database/                # SQL Init Scripts
+│   ├── init.sql             # Hypertable setup
+│   └── candles.sql          # Continuous Aggregates
 ├── src/
-│   ├── TradeFlow.Ingestor/  # C# Worker Service
-│   │   ├── Interfaces/      # IBinanceClient, IMessagePublisher
-│   │   ├── Services/        # Concrete Implementations
-│   │   ├── Worker.cs        # Coordinator
-│   │   └── Program.cs       # DI Wiring
+│   ├── TradeFlow.Ingestor/  # WebSocket -> RabbitMQ
+│   └── TradeFlow.Consumer/  # RabbitMQ -> TimescaleDB
 ```
