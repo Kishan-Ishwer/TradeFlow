@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TradeFlow.Consumer.Models;
 
 namespace TradeFlow.Consumer.Interfaces;

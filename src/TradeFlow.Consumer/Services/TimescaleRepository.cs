@@ -1,3 +1,6 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Npgsql;
 using TradeFlow.Consumer.Interfaces;
 using TradeFlow.Consumer.Models;

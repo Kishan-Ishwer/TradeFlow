@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using TradeFlow.Consumer;
 using TradeFlow.Consumer.Interfaces;
 using TradeFlow.Consumer.Services;

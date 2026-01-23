@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Hosting;
+using System.Threading;
+using System.Threading.Tasks;
 using TradeFlow.Consumer.Interfaces;
 using TradeFlow.Consumer.Services;
 

@@ -1,5 +1,7 @@
+using System;
 using System.Text;
 using RabbitMQ.Client;
+using Microsoft.Extensions.Configuration;
 using TradeFlow.Ingestor.Interfaces;
 
 namespace TradeFlow.Ingestor.Services;
@@ -36,5 +38,6 @@ public class RabbitMQPublisher : IMessagePublisher, IDisposable
     {
         _channel?.Close();
         _connection?.Close();
+        GC.SuppressFinalize(this);
     }
 }

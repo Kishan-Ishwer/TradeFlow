@@ -1,3 +1,8 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Text;
 using System.Text.Json;
 using RabbitMQ.Client;
@@ -60,5 +65,6 @@ public class RabbitMQListener(IConfiguration config, ILogger<RabbitMQListener> l
     {
         _channel?.Close();
         _connection?.Close();
+        GC.SuppressFinalize(this);
     }
 }
