@@ -10,7 +10,7 @@
 | **RabbitMQ**  | Broker           | Handles high-throughput message streaming.              | ✅ Complete |
 | **Consumer**  | .NET 8 Worker    | Consumes messages and inserts them into storage.        | ✅ Complete |
 | **Storage**   | TimescaleDB      | Stores raw ticks and auto-generates 1-minute candles.   | ✅ Complete |
-| **Analytics** | Python (FinBERT) | (Planned) AI sentiment analysis and price prediction.   | 🚧 Planned  |
+| **Analytics** | Python (FinBERT) | AI sentiment analysis and price prediction.             | ✅ Complete |
 | **Frontend**  | React            | (Planned) Real-time visualization.                      | 🚧 Planned  |
 
 ## Getting Started
@@ -58,6 +58,16 @@ cd src/TradeFlow.Ingestor
 dotnet run
 ```
 
+**Terminal C (Analytics Engine)**
+
+```bash
+cd src/analytics-engine
+# Activate venv
+.\venv\Scripts\Activate
+# Run Engine
+python main.py
+```
+
 ## Project Structure
 
 ```
@@ -68,5 +78,6 @@ TradeFlow/
 │   └── candles.sql          # Continuous Aggregates
 ├── src/
 │   ├── TradeFlow.Ingestor/  # WebSocket -> RabbitMQ
-│   └── TradeFlow.Consumer/  # RabbitMQ -> TimescaleDB
+│   ├── TradeFlow.Consumer/  # RabbitMQ -> TimescaleDB
+│   └── analytics-engine/    # Python (FinBERT + Prediction)
 ```

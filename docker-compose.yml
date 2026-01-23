@@ -17,7 +17,7 @@ services:
     image: timescale/timescaledb:latest-pg14
     container_name: tradeflow-db
     ports:
-      - "5432:5432"
+      - "5435:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
