@@ -8,7 +8,7 @@ using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using TradeFlow.Consumer.Interfaces;
-using TradeFlow.Consumer.Models;
+using TradeFlow.Common.Models;
 
 namespace TradeFlow.Consumer.Services;
 

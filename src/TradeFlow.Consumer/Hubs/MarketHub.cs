@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 using TradeFlow.Consumer.Interfaces;
-using TradeFlow.Consumer.Models;
+using TradeFlow.Common.Models;
 
 namespace TradeFlow.Consumer.Hubs;
 

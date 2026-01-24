@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace TradeFlow.Consumer.Models;
+namespace TradeFlow.Common.Models;
 
 public class AiPrediction
 {

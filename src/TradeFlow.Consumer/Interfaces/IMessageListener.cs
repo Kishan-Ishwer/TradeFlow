@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using TradeFlow.Consumer.Models;
+using TradeFlow.Common.Models;
 
 namespace TradeFlow.Consumer.Interfaces;
 

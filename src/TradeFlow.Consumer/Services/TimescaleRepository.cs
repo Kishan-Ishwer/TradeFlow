@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using TradeFlow.Consumer.Interfaces;
-using TradeFlow.Consumer.Models;
+using TradeFlow.Common.Models;
 
 namespace TradeFlow.Consumer.Services;
 
