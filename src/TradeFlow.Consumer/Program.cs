@@ -13,7 +13,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("https://localhost:5173")
+        policy.WithOrigins("http://localhost:5173")
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials();
@@ -22,11 +22,12 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSingleton<ITimescaleRepository, TimescaleRepository>();
 builder.Services.AddSingleton<IMessageListener, RabbitMQListener>();
+builder.Services.AddSingleton<IAiMessageListener, AiRabbitMQListener>();
 builder.Services.AddHostedService<Worker>();
 
 var app = builder.Build();
 
 app.UseCors();
-app.MapHub<MarketHub>("/marketHub");
+app.MapHub<MarketHub>("/hubs/market");
 
 app.Run();

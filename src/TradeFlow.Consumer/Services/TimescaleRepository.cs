@@ -31,4 +31,36 @@ public class TimescaleRepository(IConfiguration config) : ITimescaleRepository
 
         await cmd.ExecuteNonQueryAsync();
     }
+
+    public async Task<List<MarketTick>> GetRecentTicksAsync(int limit)
+    {
+        using var conn = new NpgsqlConnection(_connectionString);
+        await conn.OpenAsync();
+
+        var sql = @"
+            SELECT time, symbol, price, quantity 
+            FROM market_ticks 
+            ORDER BY time DESC 
+            LIMIT @limit";
+
+        using var cmd = new NpgsqlCommand(sql, conn);
+        cmd.Parameters.AddWithValue("limit", limit);
+
+        using var reader = await cmd.ExecuteReaderAsync();
+        var ticks = new List<MarketTick>();
+
+        while (await reader.ReadAsync())
+        {
+            ticks.Add(new MarketTick
+            {
+                Timestamp = new DateTimeOffset(reader.GetDateTime(0)).ToUnixTimeMilliseconds(),
+                Symbol = reader.GetString(1),
+                Price = (decimal)reader.GetDouble(2),
+                Quantity = (decimal)reader.GetDouble(3)
+            });
+        }
+
+        ticks.Reverse();
+        return ticks;
+    }
 }

@@ -16,3 +16,8 @@ class IPricePredictor(ABC):
     @abstractmethod
     def predict(self, candles: List[Dict[str, Any]], sentiment_score: float) -> str:
         pass
+
+class IMessagePublisher(ABC):
+    @abstractmethod
+    def publish(self, message: Dict[str, Any]):
+        pass
